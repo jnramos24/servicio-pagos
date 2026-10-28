@@ -1,0 +1,47 @@
+# GitHub lo ejecuta en sus servidores cada vez que
+# alguien sube codigo a main o abre un pull request contra main.
+# Va en el repositorio en .github/workflows/ci.yml (con los puntos y las barras tal cual).
+name: CI servicio-pagos
+
+# Eventos de activacion (on): que tiene que pasar para que se ejecute.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Trabajos (jobs). Cada uno corre en una maquina nueva y vacia.
+jobs:
+
+  compilar:
+    runs-on: ubuntu-latest          # entorno de ejecucion: una maquina Linux de GitHub
+    steps:
+      - name: Bajar el codigo del repositorio
+        uses: actions/checkout@v7   # accion ya hecha por GitHub
+
+      - name: Instalar Java 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven              # guarda las dependencias para la proxima vez
+
+      - name: Compilar
+        run: mvn -B compile         # comando de consola, igual que en la terminal
+
+  testear:
+    needs: compilar                 # solo arranca si "compilar" termino bien
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar el codigo del repositorio
+        uses: actions/checkout@v7
+
+      - name: Instalar Java 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Correr los tests
+        run: mvn -B test

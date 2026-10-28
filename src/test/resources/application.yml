@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: "servicio-pagos"
+  cloud:
+    config:
+      enabled: false
+
+eureka:
+  client:
+    enabled: false
