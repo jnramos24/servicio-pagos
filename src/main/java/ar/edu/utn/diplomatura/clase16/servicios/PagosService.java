@@ -44,7 +44,7 @@ public class PagosService {
         ClienteDTO actualizado = clientesClient.acreditar(cliente.id(), pedido.importe());
 
         String codigo = "OP-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-        return new PagoResponse("APROBADO",
+        return new PagoResponse("ACEPTADO",
                 codigo,
                 actualizado.nombre() + " " + actualizado.apellido(),
                 actualizado.saldo(),
