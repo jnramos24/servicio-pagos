@@ -30,7 +30,7 @@ public class PagosService {
      */
     public PagoResponse registrar(PagoRequest pedido) {
         if (pedido.importe() <= 0) {
-            return rechazado("El importe tiene que ser mayor a cero");
+            return rechazado("El importe tiene que ser positivo");
         }
 
         // 1er llamado HTTP al otro servicio: GET /clientes/{id}
